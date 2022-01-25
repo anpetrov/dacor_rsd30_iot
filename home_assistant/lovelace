@@ -1,0 +1,70 @@
+                {
+                    "title": "oven",
+                    "path": "oven",
+                    "icon": "mdi:stove",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "vertical-stack",
+                            "cards": [
+                                {
+                                    "type": "entities",
+                                    "entities": [
+                                        {
+                                            "entity": "script.prebake_oven_script"
+                                        },
+                                        {
+                                            "type": "section",
+                                            "label": "Custom baking mode"
+                                        },
+                                        {
+                                            "entity": "counter.cook_time_counter"
+                                        },
+                                        {
+                                            "entity": "input_number.temperature"
+                                        },
+                                        {
+                                            "entity": "script.custom_bake"
+                                        }
+                                    ],
+                                    "show_header_toggle": true
+                                },
+                                {
+                                    "type": "custom:button-card",
+                                    "name": "stove",
+                                    "entity": "input_boolean.stove_on",
+                                    "show_icon": true,
+                                    "show_name": true,
+                                    "tap_action": {
+                                        "action": "call-service",
+                                        "service": "input_boolean.turn_off",
+                                        "service_data": {
+                                            "entity_id": "input_boolean.stove_on"
+                                        }
+                                    },
+                                    "icon": "hass:stove",
+                                    "state": [
+                                        {
+                                            "value": "on",
+                                            "icon": "hass:stove",
+                                            "color": "red",
+                                            "styles": {
+                                                "card": [
+                                                    {
+                                                        "animation": "blink 3s ease infinite"
+                                                    }
+                                                ]
+                                            },
+                                            "name": "Oven is ON"
+                                        },
+                                        {
+                                            "value": "off",
+                                            "color": "rgb(68,115,159)",
+                                            "name": "Oven is OFF"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }

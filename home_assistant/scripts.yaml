@@ -1,0 +1,63 @@
+prebake_oven_script:
+  alias: Pre-heat oven for 30 minutes
+  sequence:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.stove_on
+  - service: script.oven_press_button_n_times
+    data:
+      button: bake
+      count: 1
+  - service: script.oven_press_button_n_times
+    data:
+      button: up
+      count: 10
+  - delay:
+      minutes: 30
+  - service: script.oven_turn_off
+  mode: single
+oven_turn_off:
+  sequence:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.cancel_reset
+  - service: input_boolean.turn_on
+  mode: single
+  alias: 'oven: turn off'
+  icon: mdi:stove
+custom_bake:
+  sequence:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.stove_on
+  - service: script.oven_press_button_n_times
+    data:
+      button: bake
+      count: 1
+  - service: script.oven_press_button_n_times
+    data:
+      button: up
+      count: '{{ ((states(''input_number.temperature'') | int) - 345) / 5}}'
+  - delay:
+      minutes: '{{ ((states(''counter.cook_time_counter'') | int)) }}'
+  - service: script.oven_press_button_n_times
+    data:
+      button: cancel_reset
+      count: 1
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.stove_on
+  mode: single
+  alias: Custom bake
+  icon: mdi:chef-hat
+oven_press_button_n_times:
+  alias: 'oven: press button N times'
+  sequence:
+    repeat:
+      count: '{{ count|int }}'
+      sequence:
+      - service: switch.turn_off
+        target:
+          entity_id: switch.{{ button }}
+      - delay: 1
+mode: single
